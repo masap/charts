@@ -45,14 +45,14 @@ questions:
       type: string
       required: false
     - variable: image.sonobuoy.repository
-      label: Collector image Repository
+      label: Sonobuoy image Repository
       default: "rancher/mirrored-sonobuoy-sonobuoy"
       description: "The repository of sonobuoy image"
       type: string
       required: false
     - variable: image.sonobuoy.tag
-      label: Collector image Tag
-      default: "v0.57.3"
+      label: Sonobuoy image Tag
+      default: "v0.57.5"
       description: "The repository of sonobuoy Tag"
       type: string
       required: false
