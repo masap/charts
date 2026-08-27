@@ -56721,6 +56721,32 @@ entries:
       catalog.cattle.io/type: cluster-tool
       catalog.cattle.io/ui-component: rancher-supportability-review
     apiVersion: v1
+    appVersion: 0.1.9
+    created: "2026-08-27T13:52:41.138078522+09:00"
+    description: The rancher-supportability-review operator enables the functionality
+      of Supportability Reviews for Rancher.
+    digest: 9e8332579bf6425ebde2f35b44a36e12cbd212f92bcc2c62a7717287210ee01d
+    icon: file://assets/logos/rancher-supportability-review.png
+    keywords:
+    - support
+    name: rancher-supportability-review
+    urls:
+    - assets/rancher-supportability-review/rancher-supportability-review-109.0.3+up0.1.9.tgz
+    version: 109.0.3+up0.1.9
+  - annotations:
+      catalog.cattle.io/auto-install: rancher-supportability-review-crd=match
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/display-name: Supportability Review
+      catalog.cattle.io/kube-version: '>= 1.33.0-0 < 1.36.0-0'
+      catalog.cattle.io/namespace: sr-operator-system
+      catalog.cattle.io/os: linux
+      catalog.cattle.io/permits-os: linux
+      catalog.cattle.io/provides-gvr: sr.cattle.io.reviewbundles/v1
+      catalog.cattle.io/rancher-version: '>= 2.14.0 < 2.15.0'
+      catalog.cattle.io/release-name: rancher-supportability-review
+      catalog.cattle.io/type: cluster-tool
+      catalog.cattle.io/ui-component: rancher-supportability-review
+    apiVersion: v1
     appVersion: 0.1.8
     created: "2026-08-07T09:09:20.277993836+09:00"
     description: The rancher-supportability-review operator enables the functionality
@@ -57280,6 +57306,20 @@ entries:
     - assets/rancher-supportability-review/rancher-supportability-review-104.0.0+up0.1.2.tgz
     version: 104.0.0+up0.1.2
   rancher-supportability-review-crd:
+  - annotations:
+      catalog.cattle.io/certified: rancher
+      catalog.cattle.io/hidden: "true"
+      catalog.cattle.io/namespace: sr-operator-system
+      catalog.cattle.io/release-name: rancher-supportability-review-crd
+    apiVersion: v1
+    created: "2026-08-27T13:52:41.140290986+09:00"
+    description: Installs the CRDs for rancher-supportability-review.
+    digest: 9748df8984e0dc2156fae0f0d03d0894a4c22a56a6e1d7f25939bfc284ce64b7
+    name: rancher-supportability-review-crd
+    type: application
+    urls:
+    - assets/rancher-supportability-review-crd/rancher-supportability-review-crd-109.0.3+up0.1.9.tgz
+    version: 109.0.3+up0.1.9
   - annotations:
       catalog.cattle.io/certified: rancher
       catalog.cattle.io/hidden: "true"
