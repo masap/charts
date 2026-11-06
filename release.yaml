@@ -167,9 +167,11 @@ rancher-monitoring-crd:
 rancher-supportability-review:
   - 108.0.2+up0.1.7
   - 108.0.6+up0.1.11
+  - 108.0.7+up0.1.12
 rancher-supportability-review-crd:
   - 108.0.2+up0.1.7
   - 108.0.6+up0.1.11
+  - 108.0.7+up0.1.12
 rancher-turtles:
   - 108.0.10+up0.25.10-rc.0
   - 108.0.9+up0.25.9

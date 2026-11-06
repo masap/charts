@@ -2,7 +2,7 @@ questions:
 - variable: image.useDefaultImages
   label: Use Default Images
   default: true
-  description: "Use default Supportability Review images"
+  description: "Use default Support Assistant images"
   type: boolean
   required: true
   show_subquestion_if: false
@@ -76,7 +76,7 @@ questions:
       required: false
     - variable: image.operator.tag
       label: Operator image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of Operator image"
       type: string
       required: false
@@ -88,7 +88,7 @@ questions:
       required: false
     - variable: image.appFrontend.tag
       label: App frontend image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of App frontend image"
       type: string
       required: false
