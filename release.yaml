@@ -121,9 +121,11 @@ rancher-monitoring-crd:
 rancher-supportability-review:
   - 107.0.5+up0.1.7
   - 107.0.9+up0.1.11
+  - 107.0.10+up0.1.12
 rancher-supportability-review-crd:
   - 107.0.5+up0.1.7
   - 107.0.9+up0.1.11
+  - 107.0.10+up0.1.12
 rancher-webhook:
   - 107.0.11+up0.8.13-rc.1
   - 107.0.10+up0.8.12-rc.3

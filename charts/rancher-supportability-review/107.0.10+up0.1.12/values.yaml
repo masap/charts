@@ -1,0 +1,192 @@
+# Default values for rancher-supportability-review.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+rancher:
+  secretName: "sr-api-details"
+
+image:
+  useDefaultImages: true
+  operator:
+    repository: rancher/supportability-review-operator
+    tag: v0.28.0
+  collector:
+    repository: rancher/supportability-review
+    tag: latest
+  sonobuoy:
+    repository: rancher/mirrored-sonobuoy-sonobuoy
+    tag: v0.57.5
+  analyzer:
+    repository: rancher/supportability-review-internal
+    tag: latest
+  appFrontend:
+    repository: rancher/supportability-review-app-frontend
+    tag: v0.28.0
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  operator:
+  collector:
+    requests:
+      cpu: 10m
+      memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 500Mi
+  analyzer:
+    requests:
+      cpu: 10m
+      memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 500Mi
+  appFrontend:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+      ephemeralStorage: 1Gi
+    limits:
+      cpu: 100m
+      memory: 1Gi
+      ephemeralStorage: 10Gi
+
+# Support matrix data the UI shows, taken from the analyzer image. The
+# analyzer image is pulled again on every run, so the data follows the newest
+# image under its tag.
+helperData:
+  # -- When to refresh the data from the analyzer image, in cron format.
+  schedule: "0 0 * * *"
+  # -- Files under /helper_data of the analyzer image to serve, without .json.
+  # The bundle store only accepts the names it knows.
+  files:
+  - eom-eol
+  - k3s-rancher-os-matrix
+  - rke2-rancher-os-matrix
+
+support:
+  mail: "ranchersupportnow@suse.com"
+
+# Periodic check of the node clocks. When enabled, Fleet deploys a DaemonSet
+# to the selected clusters that checks the clock of every node and records a
+# problem as a Warning event of the node (reasons ClockNotSynchronized,
+# ClockErrorTooLarge, ClockSkewDetected, ClockCheckFailed). The DaemonSet runs
+# the operator image.
+# It does not use privateRegistry.registrySecret: with a private registry that
+# requires authentication, the nodes of every checked cluster must be able to
+# pull the operator image with their own registry configuration (the Private
+# Registry setting of the cluster in Rancher, or registries.yaml of RKE2/K3s).
+clockCheck:
+  # -- Deploy the clock check DaemonSet. Requires Fleet, which Rancher installs.
+  enabled: false
+  # -- Check the nodes of the Rancher local cluster.
+  includeLocalCluster: true
+  # -- Fleet cluster selector of the downstream clusters to check. {} selects
+  # all downstream clusters, null selects none.
+  clusterSelector: {}
+  # -- Namespace of the DaemonSet in the checked clusters. It is created and
+  # deleted together with the DaemonSet, so it must not be a namespace that
+  # holds anything else.
+  namespace: sr-clock-check
+  # -- Interval between checks.
+  interval: 5m
+  # -- Largest allowed offset of a node clock from the API server clock. The
+  # offset is measured with a precision of about one second.
+  maxOffset: 2s
+  # -- Largest allowed maximum error of a node clock that the kernel
+  # estimates, 0 to disable. When the time daemon stops synchronizing the
+  # clock, the kernel increases the maximum error by 0.5 ms every second, so
+  # 1.5s detects it after about 50 minutes. systemd-timesyncd resets it to 0
+  # on every synchronization, and it reaches about 1s between synchronizations
+  # while the clock is fine, so keep it above that. chronyd sets it to its
+  # error estimate, so with chronyd on all nodes it can be lowered down to
+  # 0.5s, which keeps the clocks of any two nodes within 1s, the clock
+  # difference above which etcd warns.
+  maxError: 1500ms
+  # -- The DaemonSet runs on all nodes, including tainted control plane and
+  # etcd nodes.
+  tolerations:
+  - operator: Exists
+  resources:
+    requests:
+      cpu: 5m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 64Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+global:
+  cattle:
+    systemDefaultRegistry: ""
+
+privateRegistry:
+  # -- Setting that allows you to create a private registry secret.
+  createSecret: ~
+  # -- URL of a private registry. When unspecified, SR uses the default system registry.
+  registryUrl: ~
+  # -- User account used for authenticating with a private registry.
+  registryUser: ~
+  # -- Password for authenticating with a private registry.
+  registryPasswd: ~
+  # -- Kubernetes secret that allows you to pull images from a private registry. This setting applies only when creation of private registry secrets is enabled. You must include the private registry name in the secret name.
+  registrySecret: ~

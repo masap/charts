@@ -11,7 +11,7 @@ image:
   useDefaultImages: true
   operator:
     repository: rancher/supportability-review-operator
-    tag: v0.27.0
+    tag: v0.28.0
   collector:
     repository: rancher/supportability-review
     tag: latest
@@ -23,7 +23,7 @@ image:
     tag: latest
   appFrontend:
     repository: rancher/supportability-review-app-frontend
-    tag: v0.27.0
+    tag: v0.28.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -100,6 +100,54 @@ helperData:
 
 support:
   mail: "ranchersupportnow@suse.com"
+
+# Periodic check of the node clocks. When enabled, Fleet deploys a DaemonSet
+# to the selected clusters that checks the clock of every node and records a
+# problem as a Warning event of the node (reasons ClockNotSynchronized,
+# ClockErrorTooLarge, ClockSkewDetected, ClockCheckFailed). The DaemonSet runs
+# the operator image.
+# It does not use privateRegistry.registrySecret: with a private registry that
+# requires authentication, the nodes of every checked cluster must be able to
+# pull the operator image with their own registry configuration (the Private
+# Registry setting of the cluster in Rancher, or registries.yaml of RKE2/K3s).
+clockCheck:
+  # -- Deploy the clock check DaemonSet. Requires Fleet, which Rancher installs.
+  enabled: false
+  # -- Check the nodes of the Rancher local cluster.
+  includeLocalCluster: true
+  # -- Fleet cluster selector of the downstream clusters to check. {} selects
+  # all downstream clusters, null selects none.
+  clusterSelector: {}
+  # -- Namespace of the DaemonSet in the checked clusters. It is created and
+  # deleted together with the DaemonSet, so it must not be a namespace that
+  # holds anything else.
+  namespace: sr-clock-check
+  # -- Interval between checks.
+  interval: 5m
+  # -- Largest allowed offset of a node clock from the API server clock. The
+  # offset is measured with a precision of about one second.
+  maxOffset: 2s
+  # -- Largest allowed maximum error of a node clock that the kernel
+  # estimates, 0 to disable. When the time daemon stops synchronizing the
+  # clock, the kernel increases the maximum error by 0.5 ms every second, so
+  # 1.5s detects it after about 50 minutes. systemd-timesyncd resets it to 0
+  # on every synchronization, and it reaches about 1s between synchronizations
+  # while the clock is fine, so keep it above that. chronyd sets it to its
+  # error estimate, so with chronyd on all nodes it can be lowered down to
+  # 0.5s, which keeps the clocks of any two nodes within 1s, the clock
+  # difference above which etcd warns.
+  maxError: 1500ms
+  # -- The DaemonSet runs on all nodes, including tainted control plane and
+  # etcd nodes.
+  tolerations:
+  - operator: Exists
+  resources:
+    requests:
+      cpu: 5m
+      memory: 16Mi
+    limits:
+      cpu: 50m
+      memory: 64Mi
 
 autoscaling:
   enabled: false
