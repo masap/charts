@@ -2,7 +2,7 @@ questions:
 - variable: image.useDefaultImages
   label: Use Default Images
   default: true
-  description: "Use default Supportability Review images"
+  description: "Use default Support Assistant images"
   type: boolean
   required: true
   show_subquestion_if: false
@@ -76,7 +76,7 @@ questions:
       required: false
     - variable: image.operator.tag
       label: Operator image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of Operator image"
       type: string
       required: false
@@ -88,7 +88,7 @@ questions:
       required: false
     - variable: image.appFrontend.tag
       label: App frontend image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of App frontend image"
       type: string
       required: false
@@ -213,3 +213,33 @@ questions:
   type: string
   required: false
   group: Other Configuration
+
+- variable: clockCheck.enabled
+  label: Enable node clock check
+  default: false
+  description: "Deploy a DaemonSet with Fleet to the local and downstream clusters that periodically checks that the clock of every node is synchronized, and records a problem as a Warning event of the node."
+  type: boolean
+  required: false
+  show_subquestion_if: true
+  group: Node Clock Check
+  subquestions:
+    - variable: clockCheck.includeLocalCluster
+      label: Check the local cluster
+      default: true
+      description: "Check the nodes of the Rancher local cluster."
+      type: boolean
+    - variable: clockCheck.interval
+      label: Check interval
+      default: "5m"
+      description: "Interval between checks, i.e. 5m or 1h."
+      type: string
+    - variable: clockCheck.maxOffset
+      label: Allowed clock offset
+      default: "2s"
+      description: "Largest allowed offset of a node clock from the API server clock. The offset is measured with a precision of about one second."
+      type: string
+    - variable: clockCheck.maxError
+      label: Allowed clock maximum error
+      default: "1500ms"
+      description: "Largest allowed maximum error of a node clock that the kernel estimates, 0 to disable. Keep it above 1s with systemd-timesyncd. With chronyd on all nodes, it can be lowered down to 500ms."
+      type: string
