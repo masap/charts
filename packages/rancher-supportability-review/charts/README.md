@@ -1,6 +1,6 @@
-# Rancher Supportability Review Chart
+# Rancher Support Assistant Chart
 
-The supportability-review-operator enables running Supportability Reviews.
+The supportability-review-operator provides Support Assistant for Rancher.
 
 # Installation
 

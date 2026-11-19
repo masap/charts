@@ -1,5 +1,5 @@
 url: local
-version: 110.0.3+up0.1.11
+version: 110.0.4+up0.1.12
 additionalCharts:
   - workingDir: charts-crd
     crdOptions:
