@@ -1,3 +1,3 @@
-# Rancher Supportability Review
+# Rancher Support Assistant
 
-This chart is used for Supportability Review of Rancher.
+This chart installs Support Assistant for Rancher.

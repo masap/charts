@@ -11,19 +11,16 @@ image:
   useDefaultImages: true
   operator:
     repository: rancher/supportability-review-operator
-    tag: v0.27.0
+    tag: v0.28.0
   collector:
     repository: rancher/supportability-review
-    tag: latest
-  sonobuoy:
-    repository: rancher/mirrored-sonobuoy-sonobuoy
-    tag: v0.57.5
+    tag: v0.206.1
   analyzer:
     repository: rancher/supportability-review-internal
-    tag: latest
+    tag: v0.206.1
   appFrontend:
     repository: rancher/supportability-review-app-frontend
-    tag: v0.27.0
+    tag: v0.28.0
   pullPolicy: Always
 
 imagePullSecrets: []
@@ -85,9 +82,8 @@ resources:
       memory: 1Gi
       ephemeralStorage: 10Gi
 
-# Support matrix data the UI shows, taken from the analyzer image. The
-# analyzer image is pulled again on every run, so the data follows the newest
-# image under its tag.
+# Support matrix data the UI shows, taken from the analyzer image of
+# image.analyzer. The data changes when that image changes.
 helperData:
   # -- When to refresh the data from the analyzer image, in cron format.
   schedule: "0 0 * * *"
@@ -96,6 +92,7 @@ helperData:
   files:
   - eom-eol
   - k3s-rancher-os-matrix
+  - rancher2k8s
   - rke2-rancher-os-matrix
 
 support:

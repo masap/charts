@@ -2,7 +2,7 @@ questions:
 - variable: image.useDefaultImages
   label: Use Default Images
   default: true
-  description: "Use default Supportability Review images"
+  description: "Use default Support Assistant images"
   type: boolean
   required: true
   show_subquestion_if: false
@@ -40,20 +40,8 @@ questions:
       required: false
     - variable: image.collector.tag
       label: Collector image Tag
-      default: "latest"
+      default: "v0.206.1"
       description: "The tag of Collector image"
-      type: string
-      required: false
-    - variable: image.sonobuoy.repository
-      label: Sonobuoy image Repository
-      default: "rancher/mirrored-sonobuoy-sonobuoy"
-      description: "The repository of sonobuoy image"
-      type: string
-      required: false
-    - variable: image.sonobuoy.tag
-      label: Sonobuoy image Tag
-      default: "v0.57.5"
-      description: "The tag of sonobuoy image"
       type: string
       required: false
     - variable: image.analyzer.repository
@@ -64,7 +52,7 @@ questions:
       required: false
     - variable: image.analyzer.tag
       label: Analyzer image Tag
-      default: "latest"
+      default: "v0.206.1"
       description: "The tag of Analyzer image"
       type: string
       required: false
@@ -76,7 +64,7 @@ questions:
       required: false
     - variable: image.operator.tag
       label: Operator image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of Operator image"
       type: string
       required: false
@@ -88,7 +76,7 @@ questions:
       required: false
     - variable: image.appFrontend.tag
       label: App frontend image tag
-      default: "v0.27.0"
+      default: "v0.28.0"
       description: "The tag of App frontend image"
       type: string
       required: false
